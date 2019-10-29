@@ -1,24 +1,39 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
+import { Button, Form } from "react-bootstrap";
 
 export default class TodoItem extends Component {
-    getStyle = () => {
-            return {
-                background: '#f4f4f4',
-                padding: '10px',
-                borderBottom: '1px #ccc dotted',
-                textDecoration: (this.props.todo.completed) ? 'line-through' : 'none'
-            }
-    }
+  getStyle = () => {
+    return {
+      background: "#f4f4f4",
+      padding: "10px",
+      borderBottom: "1px #ccc dotted",
+      textDecoration: this.props.todo.completed ? "line-through" : "none"
+    };
+  };
 
-    render() {
-      const {id, title} = this.props.todo;
+  render() {
+    const { id, title } = this.props.todo;
     return (
       <div style={this.getStyle()}>
         <p>
-        <input type="checkbox" onChange={this.props.markComplete.bind(this, id)} /> {' '}
-        {title}
-        <button onClick={this.props.delTodo.bind(this, id)} style={btnStyle}>x</button>
+          <Form.Check
+            style={{
+              display: "inline"
+            }}
+            className="mr-2"
+            type="checkbox"
+            onChange={this.props.markComplete.bind(this, id)}
+          />
+          {title}
+          <Button
+            variant="danger"
+            size="sm"
+            style={btnStyle}
+            onClick={this.props.delTodo.bind(this, id)}
+          >
+            <b>x</b>
+          </Button>
         </p>
       </div>
     );
@@ -30,13 +45,7 @@ TodoItem.propTypes = {
 };
 
 const btnStyle = {
-  background:'#ff0000',
-  color: '#fff',
-  border: 'none',
-  padding: '1px 5px',
-  borderRadius: '10%',
-  cursor: 'pointer',
-  float: 'right'
-}
-
-
+  border: "none",
+  cursor: "pointer",
+  float: "right"
+};
