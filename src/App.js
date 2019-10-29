@@ -5,28 +5,18 @@ import Header from "./components/layout/Header";
 import Todos from "./components/Todos";
 import AddTodo from "./components/AddTodo";
 import About from "./components/pages/About";
-import uuid from "uuid";
+// import uuid from "uuid";
+import axios from 'axios';
 
 class App extends Component {
   state = {
-    todos: [
-      {
-        id: uuid.v4(),
-        title: "Take out the trash",
-        completed: false
-      },
-      {
-        id: uuid.v4(),
-        title: "Dinner",
-        completed: false
-      },
-      {
-        id: uuid.v4(),
-        title: "Meeting",
-        completed: false
-      }
-    ]
+    todos: []
   };
+
+  componentDidMount() {
+    axios.get('http://127.0.0.1:5000/')
+    .then(res => this.setState({ todos: res.data }))
+  }
 
   // Toggle Complete
   markComplete = id => {
@@ -41,20 +31,20 @@ class App extends Component {
   };
 
   // Delete Todo
-  delTodo = id => {
-    this.setState({
-      todos: [...this.state.todos.filter(todo => todo.id !== id)]
-    });
+  delTodo = (id) => {
+    axios.delete(`http://127.0.0.1:5000/?id=${id}`)
+    .then(res => 
+      this.setState({ todos: res.data }));
   };
 
   // Add Todo
-  addTodo = title => {
-    const newTodo = {
-      id: uuid.v4(),
+  addTodo = (title) => {
+    axios.post('http://127.0.0.1:5000/',
+    {
       title: title,
       completed: false
-    };
-    this.setState({ todos: [...this.state.todos, newTodo] });
+    }).then(res => 
+      this.setState({ todos: res.data }));
   };
 
   render() {
@@ -64,7 +54,7 @@ class App extends Component {
           rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-          crossorigin="anonymous"
+          crossOrigin="anonymous"
         />
         <div className="App">
           <div className="container">
@@ -74,7 +64,9 @@ class App extends Component {
               path="/"
               render={props => (
                 <React.Fragment>
-                  <AddTodo addTodo={this.addTodo} />
+                  <AddTodo 
+                  addTodo={this.addTodo} 
+                  />
                   <Todos
                     todos={this.state.todos}
                     markComplete={this.markComplete}

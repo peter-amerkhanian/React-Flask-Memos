@@ -5,10 +5,11 @@ import { Button, Form } from "react-bootstrap";
 export default class TodoItem extends Component {
   getStyle = () => {
     return {
-      background: "#f4f4f4",
+      background: "linear-gradient(70deg, #f4f4f4, #d2d2d2)",
       padding: "10px",
       borderBottom: "1px #ccc dotted",
-      textDecoration: this.props.todo.completed ? "line-through" : "none"
+      textDecoration: this.props.todo.completed ? "line-through" : "none",
+      borderRadius: "2px"
     };
   };
 
@@ -16,7 +17,6 @@ export default class TodoItem extends Component {
     const { id, title } = this.props.todo;
     return (
       <div style={this.getStyle()}>
-        <p>
           <Form.Check
             style={{
               display: "inline"
@@ -34,14 +34,15 @@ export default class TodoItem extends Component {
           >
             <b>x</b>
           </Button>
-        </p>
       </div>
     );
   }
 }
 
 TodoItem.propTypes = {
-  todo: PropTypes.object.isRequired
+  todo: PropTypes.object.isRequired,
+  markComplete: PropTypes.func.isRequired,
+  delTodo: PropTypes.func.isRequired
 };
 
 const btnStyle = {
